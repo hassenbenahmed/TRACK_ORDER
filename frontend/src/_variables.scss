@@ -1,0 +1,44 @@
+// === PALETTE ===
+$primary: #1B2A4A;
+$primary-light: #2E4568;
+$primary-dark: #111C33;
+$accent: #FF6B35;
+$accent-soft: #FFA726;
+
+// === SEMANTIC ===
+$success: #22C55E;
+$success-light: #DCFCE7;
+$warning: #FACC15;
+$warning-light: #FEF9C3;
+$danger: #EF4444;
+$danger-light: #FEE2E2;
+$info: #3B82F6;
+$info-light: #DBEAFE;
+
+// === NEUTRALS ===
+$bg: #F8FAFC;
+$surface: #FFFFFF;
+$text-primary: #1E293B;
+$text-secondary: #64748B;
+$text-muted: #94A3B8;
+$border: #E2E8F0;
+$border-light: #F1F5F9;
+
+// === SHADOWS ===
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+// === RADIUS ===
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 24px;
+$radius-full: 999px;
+
+// === SIDEBAR ===
+$sidebar-width: 260px;
+$sidebar-collapsed-width: 72px;
+$topbar-height: 64px;
+
