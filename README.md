@@ -72,6 +72,41 @@ docker-compose down
 - **Backend API** : http://localhost:8080
 - **Swagger UI** : http://localhost:8080/swagger-ui.html
 
+### Dockerisation multi-environnements (dev / test / prod)
+
+Le projet inclut maintenant des Dockerfiles et des compose dédiés par environnement.
+
+#### Dockerfiles backend
+
+- `backend/Dockerfile.dev` : debug JVM activé, logs détaillés, exécution `spring-boot:run`
+- `backend/Dockerfile.test` : exécution des tests backend (`mvn clean test`)
+- `backend/Dockerfile.prod` : image runtime allégée (multi-stage build)
+
+#### Dockerfiles frontend
+
+- `frontend/Dockerfile.dev` : `ng serve` avec auto-reload
+- `frontend/Dockerfile.test` : exécution des tests frontend (`npm run test:ci`)
+- `frontend/Dockerfile.prod` : build Angular prod + Nginx
+
+#### Docker Compose par environnement
+
+- `docker-compose.dev.yml`
+- `docker-compose.test.yml`
+- `docker-compose.prod.yml`
+
+Exemples:
+
+```bash
+# DEV
+docker compose -f docker-compose.dev.yml up --build
+
+# TEST
+docker compose -f docker-compose.test.yml up --build
+
+# PROD (simulation locale)
+docker compose -f docker-compose.prod.yml up --build
+```
+
 ### Développement local
 
 **Backend** :
@@ -86,6 +121,79 @@ mvn spring-boot:run
 cd frontend
 npm install
 ng serve
+```
+
+---
+
+## ☸️ Kubernetes multi-environnements (Kustomize)
+
+Structure ajoutée:
+
+```text
+kubernetes/
+├── namespaces.yaml
+├── base/
+│   ├── kustomization.yaml
+│   ├── deployment-backend.yaml
+│   ├── service-backend.yaml
+│   ├── deployment-frontend.yaml
+│   ├── service-frontend.yaml
+│   ├── deployment-postgres.yaml
+│   ├── service-postgres.yaml
+│   ├── volume.yaml
+│   ├── configmap.yaml
+│   ├── secret.yaml
+│   └── fluent-bit-configmap.yaml
+└── overlays/
+	├── dev/
+	├── test/
+	└── prod/
+```
+
+### Déploiement par namespace
+
+```bash
+kubectl apply -f kubernetes/namespaces.yaml
+
+# Dev
+kubectl apply -k kubernetes/overlays/dev
+
+# Test
+kubectl apply -k kubernetes/overlays/test
+
+# Prod
+kubectl apply -k kubernetes/overlays/prod
+```
+
+### Stratégies appliquées
+
+- **dev/test** : `Recreate`
+- **prod** : `RollingUpdate`
+
+Le backend inclut un **pod multi-conteneurs**: conteneur API + sidecar **Fluent Bit** (logs).
+
+---
+
+## ☁️ Déploiement GCP (GKE + GCR)
+
+```bash
+gcloud auth login
+gcloud config set project [PROJECT-ID]
+
+docker build -f backend/Dockerfile.prod -t gcr.io/[PROJECT-ID]/trackorder-backend:prod ./backend
+docker push gcr.io/[PROJECT-ID]/trackorder-backend:prod
+
+docker build -f frontend/Dockerfile.prod -t gcr.io/[PROJECT-ID]/trackorder-frontend:prod ./frontend
+docker push gcr.io/[PROJECT-ID]/trackorder-frontend:prod
+
+gcloud container clusters create [CLUSTER_NAME] --num-nodes=3
+gcloud container clusters get-credentials [CLUSTER_NAME]
+
+kubectl apply -f kubernetes/namespaces.yaml
+kubectl apply -k kubernetes/overlays/prod
+
+kubectl get pods -n trackorder-prod
+kubectl get services -n trackorder-prod
 ```
 
 ---

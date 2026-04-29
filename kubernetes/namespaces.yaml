@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: trackorder-dev
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: trackorder-test
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: trackorder-prod
