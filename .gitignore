@@ -44,4 +44,5 @@ Thumbs.db
 # Logs
 logs/
 *.log
+backend_logs.txt
 
