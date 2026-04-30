@@ -20,6 +20,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +30,8 @@ import java.util.List;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private static final List<String> DEFAULT_ALLOWED_ORIGINS = List.of("http://localhost:4200", "http://localhost");
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -60,7 +64,11 @@ public class SecurityConfig {
         List<String> allowedOrigins = Arrays.stream(corsAllowedOrigins.split(","))
                 .map(String::trim)
                 .filter(origin -> !origin.isBlank())
+                .filter(this::isValidOrigin)
                 .toList();
+        if (allowedOrigins.isEmpty()) {
+            allowedOrigins = DEFAULT_ALLOWED_ORIGINS;
+        }
         configuration.setAllowedOrigins(allowedOrigins);
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));
@@ -80,5 +88,14 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    private boolean isValidOrigin(String origin) {
+        try {
+            URI uri = new URI(origin);
+            return uri.getScheme() != null && uri.getHost() != null;
+        } catch (URISyntaxException ex) {
+            return false;
+        }
     }
 }
