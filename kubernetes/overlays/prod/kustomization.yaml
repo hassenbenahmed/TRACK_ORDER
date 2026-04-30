@@ -14,8 +14,8 @@ patches:
 
 images:
   - name: trackorder-backend:prod
-    newName: gcr.io/PROJECT-ID/trackorder-backend
+    newName: gcr.io/gestion-de-livraison-493711/backend
     newTag: prod
   - name: trackorder-frontend:prod
-    newName: gcr.io/PROJECT-ID/trackorder-frontend
+    newName: gcr.io/gestion-de-livraison-493711/frontend
     newTag: prod

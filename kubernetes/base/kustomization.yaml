@@ -6,6 +6,7 @@ resources:
   - secret.yaml
   - volume.yaml
   - fluent-bit-configmap.yaml
+  - nginx-configmap.yaml
   - deployment-postgres.yaml
   - service-postgres.yaml
   - deployment-backend.yaml

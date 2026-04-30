@@ -9,3 +9,8 @@ spec:
     rollingUpdate:
       maxUnavailable: 0
       maxSurge: 1
+  template:
+    spec:
+      containers:
+      - name: trackorder-frontend
+        imagePullPolicy: Always
