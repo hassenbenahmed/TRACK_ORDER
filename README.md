@@ -296,6 +296,7 @@ ng serve
 | `DB_PASSWORD` | Mot de passe DB | `postgres` ⚠️ |
 | `JWT_SECRET` | Clé secrète JWT (min 64 chars) | valeur insécurisée ⚠️ |
 | `JWT_EXPIRATION` | Durée de vie du token (ms) | `86400000` (24 h) |
+| `CORS_ALLOWED_ORIGINS` | Origines autorisées (comma-separated) | `http://localhost:4200,http://localhost` |
 | `STRIPE_SECRET_KEY` | Clé secrète Stripe | `sk_test_placeholder` |
 | `STRIPE_WEBHOOK_SECRET` | Secret webhook Stripe | `whsec_placeholder` |
 | `SERVER_PORT` | Port du serveur Spring Boot | `8080` |
@@ -489,4 +490,3 @@ jobs:
 ## 👥 Auteur
 
 Projet TrackOrder — Système de Gestion des Commandes & Livraisons
-
